@@ -1,12 +1,8 @@
 {
-  "name": "react-typescript",
+  "name": "react-examples",
   "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
-  "keywords": [
-    "typescript",
-    "react",
-    "starter"
-  ],
+  "description": "Basic examples made in React to guide newbies",
+  "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
     "axios": "0.20.0",
