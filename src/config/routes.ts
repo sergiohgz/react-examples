@@ -2,7 +2,8 @@ const basePath = '/';
 
 const routes = {
     home: basePath,
-    todo: `${basePath}todo`,
+    todos: `${basePath}todos`,
+    todosHooks: `${basePath}todos-hooks`,
 };
 
 export default routes;

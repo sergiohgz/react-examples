@@ -1,38 +1,28 @@
-import React, { Component } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Task, TaskId } from '../../models/Task';
 import api from './api';
 import TodoItem from './TodoItem';
 
-type TodosState = {
-    tasks: Task[],
-    isLoading: boolean,
-};
+const TodosHooks: FC = () => {
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [isLoading, setLoading] = useState(false);
 
-class Todos extends Component<unknown, TodosState> {
-    state = {
-        tasks: [],
-        isLoading: false,
-    };
-
-    componentDidMount() {
-        this.setState({ isLoading: true });
+    /*
+     * Aquí se realiza la petición de datos, activando la carga de datos y
+     * desactivandola una vez finalizada la petición. Cuando se sale de la
+     * pantalla, se eliminan devuelve a un valor nulo
+     */
+    useEffect(() => {
+        setLoading(true);
         api.getTasks().then(response => {
-            this.setState({
-                tasks: response.data, 
-                isLoading: false,
-            });
+            setTasks(response.data);
+            setLoading(false);
         });
-    }
+        return () => setTasks([]);
+    }, [setTasks, setLoading]);
 
-    componentWillUnmount() {
-        this.setState({
-            tasks: [],
-            isLoading: false,
-        })
-    }
-
-    toggleCompleted = (id: TaskId): void => {
-        this.setState(({tasks: prevTodos}) => {
+    const toggleCompleted = (id: TaskId): void => {
+        setTasks(prevTodos => {
             const itemPosition = prevTodos.findIndex(task => task.id === id);
             const todoToUpdate = prevTodos[itemPosition];
             const updatedTodos = [
@@ -44,11 +34,9 @@ class Todos extends Component<unknown, TodosState> {
         });
     };
 
-    render(): JSX.Element {
-        const { tasks, isLoading } = this.state;
-        return (
+    return (
         <div>
-            <h2>Todo List</h2>
+            <h2>Todo List (Hooks version)</h2>
             {isLoading ? (
                 <div>Loading...</div>
             ) : (
@@ -61,7 +49,7 @@ class Todos extends Component<unknown, TodosState> {
                                     id={task.id}
                                     description={task.description}
                                     completed={task.completed}
-                                    onToggleCompleted={this.toggleCompleted}
+                                    onToggleCompleted={toggleCompleted}
                                 />
                             ))}
                         </ul>
@@ -72,7 +60,6 @@ class Todos extends Component<unknown, TodosState> {
             )}
         </div>
     );
-    }
-}
+};
 
-export default Todos;
+export default TodosHooks;
