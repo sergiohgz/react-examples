@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+
 import { Task, TaskId } from '../../models/Task';
 import api from './api';
 import TodoItem from './TodoItem';
@@ -18,7 +19,9 @@ const TodosHooks: FC = () => {
             setTasks(response.data);
             setLoading(false);
         });
-        return () => setTasks([]);
+        return () => {
+            setTasks([]);
+        };
     }, [setTasks, setLoading]);
 
     const toggleCompleted = (id: TaskId): void => {

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import { Task, TaskId } from '../../models/Task';
 
 type TodoItemProps = Task & {
